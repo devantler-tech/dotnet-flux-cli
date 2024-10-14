@@ -18,7 +18,9 @@ get() {
   chmod +x "$target_dir/$target_name"
 }
 
-get "https://getbin.io/fluxcd/flux2?os=darwin&arch=amd64" "flux" "src/Devantler.FluxCLI/assets/binaries" "flux-darwin-amd64" true
-get "https://getbin.io/fluxcd/flux2?os=darwin&arch=arm64" "flux" "src/Devantler.FluxCLI/assets/binaries" "flux-darwin-arm64" true
-get "https://getbin.io/fluxcd/flux2?os=linux&arch=amd64" "flux" "src/Devantler.FluxCLI/assets/binaries" "flux-linux-amd64" true
-get "https://getbin.io/fluxcd/flux2?os=linux&arch=arm64" "flux" "src/Devantler.FluxCLI/assets/binaries" "flux-linux-arm64" true
+get "https://getbin.io/fluxcd/flux2?os=darwin&arch=amd64" "flux" "Devantler.FluxCLI/runtimes/osx-x64/native" "flux-osx-x64" true
+get "https://getbin.io/fluxcd/flux2?os=darwin&arch=arm64" "flux" "Devantler.FluxCLI/runtimes/osx-arm64/native" "flux-osx-arm64" true
+get "https://getbin.io/fluxcd/flux2?os=linux&arch=amd64" "flux" "Devantler.FluxCLI/runtimes/linux-x64/native" "flux-linux-x64" true
+get "https://getbin.io/fluxcd/flux2?os=linux&arch=arm64" "flux" "Devantler.FluxCLI/runtimes/linux-arm64/native" "flux-linux-arm64" true
+get "https://getbin.io/fluxcd/flux2?os=windows&arch=amd64" "flux.exe" "Devantler.FluxCLI/runtimes/win-x64/native" "flux-win-x64.exe" true
+get "https://getbin.io/fluxcd/flux2?os=windows&arch=arm64" "flux.exe" "Devantler.FluxCLI/runtimes/win-arm64/native" "flux-win-arm64.exe" true
