@@ -36,7 +36,7 @@ public static class Flux
   }
 
   /// <summary>
-  /// Installs flux in the specified context.
+  /// Installs flux.
   /// </summary>
   /// <param name="context"></param>
   /// <param name="cancellationToken"></param>
@@ -50,6 +50,25 @@ public static class Flux
     if (exitCode != 0)
     {
       throw new InvalidOperationException($"Failed to install flux: {message}");
+    }
+  }
+
+  /// <summary>
+  /// Uninstalls flux.
+  /// </summary>
+  /// <param name="context"></param>
+  /// <param name="cancellationToken"></param>
+  /// <returns></returns>
+  /// <exception cref="InvalidOperationException"></exception>
+  public static async Task UninstallAsync(string? context = default, CancellationToken cancellationToken = default)
+  {
+    var command = string.IsNullOrEmpty(context) ?
+      Command.WithArguments(["uninstall", "--silent"]) :
+      Command.WithArguments(["uninstall", "--silent", "--context", context]);
+    var (exitCode, message) = await CLI.RunAsync(command, cancellationToken: cancellationToken).ConfigureAwait(false);
+    if (exitCode != 0 || message.Contains("connection refused", StringComparison.OrdinalIgnoreCase))
+    {
+      throw new InvalidOperationException($"Failed to uninstall flux: {message}");
     }
   }
 
