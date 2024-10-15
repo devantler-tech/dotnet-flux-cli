@@ -31,6 +31,7 @@ public class AllMethodsTests
     await Flux.ReconcileKustomizationAsync("podinfo", withSource: true, cancellationToken: cancellationToken);
 
     // Cleanup
+    await Flux.UninstallAsync(cancellationToken: cancellationToken);
     await Kind.DeleteClusterAsync(clusterName, CancellationToken.None);
   }
 }
