@@ -1,4 +1,4 @@
-# 🔑 .NET Age CLI
+# 🔁 .NET Flux CLI
 
 [![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![Test](https://github.com/devantler/dotnet-flux-cli/actions/workflows/test.yaml/badge.svg)](https://github.com/devantler/dotnet-flux-cli/actions/workflows/test.yaml)
