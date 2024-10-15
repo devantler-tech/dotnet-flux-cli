@@ -6,6 +6,7 @@ namespace Devantler.FluxCLI.Tests.FluxTests;
 /// <summary>
 /// Tests for all methods in the <see cref="Flux"/> class.
 /// </summary>
+[Collection("Flux")]
 public class AllMethodsTests
 {
   /// <summary>
