@@ -64,7 +64,6 @@ await Flux.CreateOCISourceAsync("podinfo", new Uri("oci://ghcr.io/stefanprodan/m
 await Flux.CreateKustomizationAsync("podinfo", "OCIRepository/podinfo", "");
 
 // Reconcile the source and kustomization
-await Flux.ReconcileAsync(FluxResource.Source, "podinfo", cancellationToken: cancellationToken);
-await Flux.ReconcileAsync(FluxResource.Kustomization, "podinfo", cancellationToken: cancellationToken);
-
+await Flux.ReconcileOCISourceAsync("podinfo").ConfigureAwait(false))
+await Flux.ReconcileKustomizationAsync("podinfo").ConfigureAwait(false)
 ```
