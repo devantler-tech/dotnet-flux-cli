@@ -1,5 +1,4 @@
-﻿using System.Globalization;
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
 using CliWrap;
 using Devantler.CLIRunner;
 
@@ -104,21 +103,61 @@ public static class Flux
   }
 
   /// <summary>
-  /// Reconcile sources and resources.
+  /// Reconcile sources.
   /// </summary>
-  /// <param name="resource"></param>
   /// <param name="name"></param>
   /// <param name="namespace"></param>
   /// <param name="cancellationToken"></param>
-  public static async Task ReconcileAsync(FluxResource resource, string name, string @namespace = "flux-system", CancellationToken cancellationToken = default)
+  public static async Task ReconcileOCISourceAsync(string name, string @namespace = "flux-system", CancellationToken cancellationToken = default)
   {
     var command = Command.WithArguments(
-      ["reconcile", resource.ToString().ToLower(CultureInfo.CurrentCulture), name, "--namespace", @namespace]
+      ["reconcile", "source", "oci", name, "--namespace", @namespace]
     );
     var (exitCode, message) = await CLI.RunAsync(command, cancellationToken: cancellationToken).ConfigureAwait(false);
     if (exitCode != 0)
     {
-      throw new InvalidOperationException($"Failed to reconcile {resource}: {message}");
+      throw new InvalidOperationException($"Failed to reconcile OCI source: {message}");
     }
   }
+
+  /// <summary>
+  /// Reconcile Kustomization.
+  /// </summary>
+  /// <param name="name"></param>
+  /// <param name="namespace"></param>
+  /// <param name="withSource"></param>
+  /// <param name="cancellationToken"></param>
+  public static async Task ReconcileKustomizationAsync(string name, string @namespace = "flux-system", bool withSource = false, CancellationToken cancellationToken = default)
+  {
+    var command = Command.WithArguments(
+      ["reconcile", "kustomization", name, "--namespace", @namespace, "--with-source", withSource.ToString()]
+    );
+    var (exitCode, message) = await CLI.RunAsync(command, cancellationToken: cancellationToken).ConfigureAwait(false);
+    if (exitCode != 0)
+    {
+      throw new InvalidOperationException($"Failed to reconcile Kustomization: {message}");
+    }
+  }
+
+  /// <summary>
+  /// Reconcile HelmRelease.
+  /// </summary>
+  /// <param name="name"></param>
+  /// <param name="namespace"></param>
+  /// <param name="withSource"></param>
+  /// <param name="force"></param>
+  /// <param name="reset"></param>
+  /// <param name="cancellationToken"></param>
+  public static async Task ReconcileHelmReleaseAsync(string name, string @namespace = "flux-system", bool withSource = false, bool force = false, bool reset = false, CancellationToken cancellationToken = default)
+  {
+    var command = Command.WithArguments(
+      ["reconcile", "helmrelease", name, "--namespace", @namespace, "--with-source", withSource.ToString(), "--force", force.ToString(), "--reset", reset.ToString()]
+    );
+    var (exitCode, message) = await CLI.RunAsync(command, cancellationToken: cancellationToken).ConfigureAwait(false);
+    if (exitCode != 0)
+    {
+      throw new InvalidOperationException($"Failed to reconcile HelmRelease: {message}");
+    }
+  }
+
 }
