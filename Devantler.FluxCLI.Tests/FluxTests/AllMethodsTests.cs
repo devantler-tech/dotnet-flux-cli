@@ -6,6 +6,7 @@ namespace Devantler.FluxCLI.Tests.FluxTests;
 /// <summary>
 /// Tests for all methods in the <see cref="Flux"/> class.
 /// </summary>
+[Collection("Flux")]
 public class AllMethodsTests
 {
   /// <summary>
@@ -26,8 +27,8 @@ public class AllMethodsTests
     await Flux.InstallAsync(cancellationToken: cancellationToken);
     await Flux.CreateOCISourceAsync("podinfo", new Uri("oci://ghcr.io/stefanprodan/manifests/podinfo"));
     await Flux.CreateKustomizationAsync("podinfo", "OCIRepository/podinfo", "");
-    await Flux.ReconcileAsync(FluxResource.Source, "podinfo", cancellationToken: cancellationToken);
-    await Flux.ReconcileAsync(FluxResource.Kustomization, "podinfo", cancellationToken: cancellationToken);
+    await Flux.ReconcileOCISourceAsync("podinfo", cancellationToken: cancellationToken);
+    await Flux.ReconcileKustomizationAsync("podinfo", withSource: true, cancellationToken: cancellationToken);
 
     // Cleanup
     await Kind.DeleteClusterAsync(clusterName, CancellationToken.None);
