@@ -22,7 +22,7 @@ public class AllMethodsTests
     var cancellationToken = new CancellationToken();
 
     // Act
-    await Kind.DeleteClusterAsync(clusterName, CancellationToken.None);
+    await Kind.DeleteClusterAsync(clusterName, cancellationToken);
     await Kind.CreateClusterAsync(clusterName, configPath, cancellationToken);
     await Flux.InstallAsync(cancellationToken: cancellationToken);
     await Flux.CreateOCISourceAsync("podinfo", new Uri("oci://ghcr.io/stefanprodan/manifests/podinfo"));
@@ -32,6 +32,6 @@ public class AllMethodsTests
 
     // Cleanup
     await Flux.UninstallAsync(cancellationToken: cancellationToken);
-    await Kind.DeleteClusterAsync(clusterName, CancellationToken.None);
+    await Kind.DeleteClusterAsync(clusterName, cancellationToken);
   }
 }
