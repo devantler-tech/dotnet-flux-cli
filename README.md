@@ -8,7 +8,6 @@
   <summary>Show/hide folder structure</summary>
 
 <!-- readme-tree start -->
-
 ```
 .
 ├── .github
@@ -24,14 +23,16 @@
 │       │   └── native
 │       ├── osx-x64
 │       │   └── native
+│       ├── win-arm64
+│       │   └── native
 │       └── win-x64
 │           └── native
 └── Devantler.FluxCLI.Tests
-    └── FluxTests
+    ├── FluxTests
+    └── assets
 
-17 directories
+20 directories
 ```
-
 <!-- readme-tree end -->
 
 </details>
