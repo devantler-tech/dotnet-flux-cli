@@ -28,6 +28,7 @@ public class GetCommandTests
   /// <summary>
   /// Test to verify that the command returns the correct binary for Linux on x64 architecture.
   /// </summary>
+  [Fact]
   public void GetCommand_ShouldReturnOSXArm64Binary()
   {
     // Arrange
