@@ -1,7 +1,7 @@
 namespace Devantler.FluxCLI.Tests.FluxTests;
 
 /// <summary>
-/// Tests for the <see cref="Flux.ReconcileHelmReleaseAsync(string, string, bool, bool, bool, CancellationToken)"/> method.
+/// Tests for the <see cref="Flux.ReconcileHelmReleaseAsync(string, string, string, bool, bool, bool, CancellationToken)"/> method.
 /// </summary>
 [Collection("Flux")]
 public class ReconcileHelmReleaseAsyncTests

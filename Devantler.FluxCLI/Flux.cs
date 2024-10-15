@@ -56,6 +56,7 @@ public static class Flux
   /// <summary>
   /// Creates a OCIRepository source.
   /// </summary>
+  /// <param name="context"></param>
   /// <param name="name"></param>
   /// <param name="url"></param>
   /// <param name="namespace"></param>
@@ -64,12 +65,16 @@ public static class Flux
   /// <param name="cancellationToken"></param>
   /// <returns></returns>
   /// <exception cref="InvalidOperationException"></exception>
-  public static async Task CreateOCISourceAsync(string name, Uri url, string @namespace = "flux-system", string tag = "latest", string interval = "10m", CancellationToken cancellationToken = default)
+  public static async Task CreateOCISourceAsync(string name, Uri url, string? context = default, string @namespace = "flux-system", string tag = "latest", string interval = "10m", CancellationToken cancellationToken = default)
   {
     ArgumentNullException.ThrowIfNull(url, nameof(url));
-    var command = Command.WithArguments(
-      ["create", "source", "oci", name, "--url", url.ToString(), "--tag", tag, "--interval", interval, "--namespace", @namespace]
-    );
+    var command = string.IsNullOrEmpty(context) ?
+      Command.WithArguments(
+        ["create", "source", "oci", name, "--url", url.ToString(), "--tag", tag, "--interval", interval, "--namespace", @namespace]
+      ) :
+      Command.WithArguments(
+        ["create", "source", "oci", name, "--url", url.ToString(), "--tag", tag, "--interval", interval, "--namespace", @namespace, "--context", context]
+      );
     var (exitCode, message) = await CLI.RunAsync(command, cancellationToken: cancellationToken).ConfigureAwait(false);
     if (exitCode != 0)
     {
@@ -80,6 +85,7 @@ public static class Flux
   /// <summary>
   /// Creates a Kustomization.
   /// </summary>
+  /// <param name="context"></param>
   /// <param name="name"></param>
   /// <param name="source"></param>
   /// <param name="path"></param>
@@ -90,11 +96,15 @@ public static class Flux
   /// <param name="wait"></param>
   /// <param name="cancellationToken"></param>
   /// <returns></returns>
-  public static async Task CreateKustomizationAsync(string name, string source, string path, string @namespace = "flux-system", string interval = "5m", string[]? dependsOn = default, bool prune = true, bool wait = true, CancellationToken cancellationToken = default)
+  public static async Task CreateKustomizationAsync(string name, string source, string path, string? context = default, string @namespace = "flux-system", string interval = "5m", string[]? dependsOn = default, bool prune = true, bool wait = true, CancellationToken cancellationToken = default)
   {
-    var command = Command.WithArguments(
-      ["create", "kustomization", name, "--source", source, "--path", path, "--namespace", @namespace, "--target-namespace", @namespace, "--interval", interval, "--prune", prune.ToString(), "--wait", wait.ToString(), "--depends-on", dependsOn != null ? string.Join(",", dependsOn) : ""]
-    );
+    var command = string.IsNullOrEmpty(context) ?
+      Command.WithArguments(
+        ["create", "kustomization", name, "--source", source, "--path", path, "--namespace", @namespace, "--target-namespace", @namespace, "--interval", interval, "--prune", prune.ToString(), "--wait", wait.ToString(), "--depends-on", dependsOn != null ? string.Join(",", dependsOn) : ""]
+      ) :
+      Command.WithArguments(
+        ["create", "kustomization", name, "--source", source, "--path", path, "--namespace", @namespace, "--target-namespace", @namespace, "--interval", interval, "--prune", prune.ToString(), "--wait", wait.ToString(), "--depends-on", dependsOn != null ? string.Join(",", dependsOn) : "", "--context", context]
+      );
     var (exitCode, message) = await CLI.RunAsync(command, cancellationToken: cancellationToken).ConfigureAwait(false);
     if (exitCode != 0)
     {
@@ -106,13 +116,18 @@ public static class Flux
   /// Reconcile sources.
   /// </summary>
   /// <param name="name"></param>
+  /// <param name="context"></param>
   /// <param name="namespace"></param>
   /// <param name="cancellationToken"></param>
-  public static async Task ReconcileOCISourceAsync(string name, string @namespace = "flux-system", CancellationToken cancellationToken = default)
+  public static async Task ReconcileOCISourceAsync(string name, string? context = default, string @namespace = "flux-system", CancellationToken cancellationToken = default)
   {
-    var command = Command.WithArguments(
-      ["reconcile", "source", "oci", name, "--namespace", @namespace]
-    );
+    var command = string.IsNullOrEmpty(context) ?
+      Command.WithArguments(
+        ["reconcile", "source", "oci", name, "--namespace", @namespace]
+      ) :
+      Command.WithArguments(
+        ["reconcile", "source", "oci", name, "--namespace", @namespace, "--context", context]
+      );
     var (exitCode, message) = await CLI.RunAsync(command, cancellationToken: cancellationToken).ConfigureAwait(false);
     if (exitCode != 0)
     {
@@ -124,14 +139,19 @@ public static class Flux
   /// Reconcile Kustomization.
   /// </summary>
   /// <param name="name"></param>
+  /// <param name="context"></param>
   /// <param name="namespace"></param>
   /// <param name="withSource"></param>
   /// <param name="cancellationToken"></param>
-  public static async Task ReconcileKustomizationAsync(string name, string @namespace = "flux-system", bool withSource = false, CancellationToken cancellationToken = default)
+  public static async Task ReconcileKustomizationAsync(string name, string? context = default, string @namespace = "flux-system", bool withSource = false, CancellationToken cancellationToken = default)
   {
-    var command = Command.WithArguments(
-      ["reconcile", "kustomization", name, "--namespace", @namespace, "--with-source", withSource.ToString()]
-    );
+    var command = string.IsNullOrEmpty(context) ?
+      Command.WithArguments(
+        ["reconcile", "kustomization", name, "--namespace", @namespace, "--with-source", withSource.ToString()]
+      ) :
+      Command.WithArguments(
+        ["reconcile", "kustomization", name, "--namespace", @namespace, "--with-source", withSource.ToString(), "--context", context]
+      );
     var (exitCode, message) = await CLI.RunAsync(command, cancellationToken: cancellationToken).ConfigureAwait(false);
     if (exitCode != 0)
     {
@@ -143,16 +163,21 @@ public static class Flux
   /// Reconcile HelmRelease.
   /// </summary>
   /// <param name="name"></param>
+  /// <param name="context"></param>
   /// <param name="namespace"></param>
   /// <param name="withSource"></param>
   /// <param name="force"></param>
   /// <param name="reset"></param>
   /// <param name="cancellationToken"></param>
-  public static async Task ReconcileHelmReleaseAsync(string name, string @namespace = "flux-system", bool withSource = false, bool force = false, bool reset = false, CancellationToken cancellationToken = default)
+  public static async Task ReconcileHelmReleaseAsync(string name, string? context = default, string @namespace = "flux-system", bool withSource = false, bool force = false, bool reset = false, CancellationToken cancellationToken = default)
   {
-    var command = Command.WithArguments(
-      ["reconcile", "helmrelease", name, "--namespace", @namespace, "--with-source", withSource.ToString(), "--force", force.ToString(), "--reset", reset.ToString()]
-    );
+    var command = string.IsNullOrEmpty(context) ?
+      Command.WithArguments(
+        ["reconcile", "helmrelease", name, "--namespace", @namespace, "--with-source", withSource.ToString(), "--force", force.ToString(), "--reset", reset.ToString()]
+      ) :
+      Command.WithArguments(
+        ["reconcile", "helmrelease", name, "--namespace", @namespace, "--with-source", withSource.ToString(), "--force", force.ToString(), "--reset", reset.ToString(), "--context", context]
+      );
     var (exitCode, message) = await CLI.RunAsync(command, cancellationToken: cancellationToken).ConfigureAwait(false);
     if (exitCode != 0)
     {

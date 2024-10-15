@@ -1,7 +1,7 @@
 namespace Devantler.FluxCLI.Tests.FluxTests;
 
 /// <summary>
-/// Tests for the <see cref="Flux.ReconcileKustomizationAsync(string, string, bool, CancellationToken)"/> method.
+/// Tests for the <see cref="Flux.ReconcileKustomizationAsync(string, string, string, bool, CancellationToken)"/> method.
 /// </summary>
 [Collection("Flux")]
 public class ReconcileKustomizationAsyncTests
