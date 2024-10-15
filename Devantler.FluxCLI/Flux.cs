@@ -63,8 +63,8 @@ public static class Flux
   public static async Task UninstallAsync(string? context = default, CancellationToken cancellationToken = default)
   {
     var command = string.IsNullOrEmpty(context) ?
-      Command.WithArguments(["uninstall"]) :
-      Command.WithArguments(["uninstall", "--context", context]);
+      Command.WithArguments(["uninstall", "--silent"]) :
+      Command.WithArguments(["uninstall", "--silent", "--context", context]);
     var (exitCode, message) = await CLI.RunAsync(command, cancellationToken: cancellationToken).ConfigureAwait(false);
     if (exitCode != 0)
     {
