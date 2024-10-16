@@ -1,4 +1,5 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Globalization;
+using System.Runtime.InteropServices;
 using CliWrap;
 using Devantler.CLIRunner;
 
@@ -204,4 +205,47 @@ public static class Flux
     }
   }
 
+  /// <summary>
+  /// Push an artifact to an OCI registry.
+  /// </summary>
+  /// <param name="registry"></param>
+  /// <param name="path"></param>
+  /// <param name="source"></param>
+  /// <param name="revision"></param>
+  /// <param name="cancellationToken"></param>
+  /// <returns></returns>
+  public static async Task PushArtifactAsync(Uri registry, string path, string? source = default, string? revision = default, CancellationToken cancellationToken = default)
+  {
+    ArgumentNullException.ThrowIfNull(registry, nameof(registry));
+
+    long currentTimeEpoch = DateTimeOffset.Now.ToUnixTimeSeconds();
+
+    if (string.IsNullOrEmpty(source))
+    {
+      source = registry.ToString();
+    }
+
+    if (string.IsNullOrEmpty(revision))
+    {
+      revision = currentTimeEpoch.ToString(CultureInfo.InvariantCulture);
+    }
+
+    var pushCommand = Command.WithArguments(
+      ["push", "artifact", $"{registry}:{currentTimeEpoch}", "--path", path, "--source", source, "--revision", revision]
+    );
+    var (exitCode, message) = await CLI.RunAsync(pushCommand, cancellationToken: cancellationToken).ConfigureAwait(false);
+    if (exitCode != 0)
+    {
+      throw new InvalidOperationException($"Failed to push artifact: {message}");
+    }
+
+    var tagCommand = Command.WithArguments(
+      ["tag", "artifact", $"{registry}:{currentTimeEpoch}", "--tag", "latest"]
+    );
+    (exitCode, message) = await CLI.RunAsync(tagCommand, cancellationToken: cancellationToken).ConfigureAwait(false);
+    if (exitCode != 0)
+    {
+      throw new InvalidOperationException($"Failed to tag artifact: {message}");
+    }
+  }
 }
