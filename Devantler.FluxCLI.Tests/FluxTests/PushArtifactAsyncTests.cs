@@ -18,9 +18,9 @@ public class PushArtifactAsyncTests
     // Arrange
     var cancellationToken = new CancellationToken();
     var dockerProvisioner = new DockerProvisioner();
-    await dockerProvisioner.CreateRegistryAsync("ksail-registry", 5555, cancellationToken);
 
     // Act
+    await dockerProvisioner.CreateRegistryAsync("ksail-registry", 5555, cancellationToken);
     string testFile = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName());
     await File.WriteAllTextAsync(testFile, "test");
     var exception = await Record.ExceptionAsync(async () => await Flux.PushArtifactAsync(new Uri("oci://localhost:5555/test-artifact"), testFile, cancellationToken: cancellationToken).ConfigureAwait(false));
