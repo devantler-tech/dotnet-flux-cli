@@ -42,15 +42,15 @@ public static class Flux
   /// <param name="context"></param>
   /// <param name="cancellationToken"></param>
   /// <returns></returns>
-  /// <exception cref="InvalidOperationException"></exception>
+  /// <exception cref="FluxException"></exception>
   public static async Task InstallAsync(string? context = default, CancellationToken cancellationToken = default)
   {
     var command = string.IsNullOrEmpty(context) ? Command.WithArguments(["install"]) :
       Command.WithArguments(["install", "--context", context]);
-    var (exitCode, message) = await CLI.RunAsync(command, cancellationToken: cancellationToken).ConfigureAwait(false);
+    var (exitCode, _) = await CLI.RunAsync(command, cancellationToken: cancellationToken).ConfigureAwait(false);
     if (exitCode != 0)
     {
-      throw new InvalidOperationException($"Failed to install flux: {message}");
+      throw new FluxException($"Failed to install flux");
     }
   }
 
@@ -60,7 +60,7 @@ public static class Flux
   /// <param name="context"></param>
   /// <param name="cancellationToken"></param>
   /// <returns></returns>
-  /// <exception cref="InvalidOperationException"></exception>
+  /// <exception cref="FluxException"></exception>
   public static async Task UninstallAsync(string? context = default, CancellationToken cancellationToken = default)
   {
     var command = string.IsNullOrEmpty(context) ?
@@ -69,7 +69,7 @@ public static class Flux
     var (exitCode, message) = await CLI.RunAsync(command, cancellationToken: cancellationToken).ConfigureAwait(false);
     if (exitCode != 0 || message.Contains("connection refused", StringComparison.OrdinalIgnoreCase))
     {
-      throw new InvalidOperationException($"Failed to uninstall flux: {message}");
+      throw new FluxException($"Failed to uninstall flux");
     }
   }
 
@@ -84,7 +84,7 @@ public static class Flux
   /// <param name="interval"></param>
   /// <param name="cancellationToken"></param>
   /// <returns></returns>
-  /// <exception cref="InvalidOperationException"></exception>
+  /// <exception cref="FluxException"></exception>
   public static async Task CreateOCISourceAsync(string name, Uri url, string? context = default, string @namespace = "flux-system", string tag = "latest", string interval = "10m", CancellationToken cancellationToken = default)
   {
     ArgumentNullException.ThrowIfNull(url, nameof(url));
@@ -95,10 +95,10 @@ public static class Flux
       Command.WithArguments(
         ["create", "source", "oci", name, "--url", url.ToString(), "--tag", tag, "--interval", interval, "--namespace", @namespace, "--context", context]
       );
-    var (exitCode, message) = await CLI.RunAsync(command, cancellationToken: cancellationToken).ConfigureAwait(false);
+    var (exitCode, _) = await CLI.RunAsync(command, cancellationToken: cancellationToken).ConfigureAwait(false);
     if (exitCode != 0)
     {
-      throw new InvalidOperationException($"Failed to create OCI source: {message}");
+      throw new FluxException($"Failed to create OCI source");
     }
   }
 
@@ -125,10 +125,10 @@ public static class Flux
       Command.WithArguments(
         ["create", "kustomization", name, "--source", source, "--path", path, "--namespace", @namespace, "--target-namespace", @namespace, "--interval", interval, "--prune", prune.ToString(), "--wait", wait.ToString(), "--depends-on", dependsOn != null ? string.Join(",", dependsOn) : "", "--context", context]
       );
-    var (exitCode, message) = await CLI.RunAsync(command, cancellationToken: cancellationToken).ConfigureAwait(false);
+    var (exitCode, _) = await CLI.RunAsync(command, cancellationToken: cancellationToken).ConfigureAwait(false);
     if (exitCode != 0)
     {
-      throw new InvalidOperationException($"Failed to create Kustomization: {message}");
+      throw new FluxException($"Failed to create Kustomization");
     }
   }
 
@@ -148,10 +148,10 @@ public static class Flux
       Command.WithArguments(
         ["reconcile", "source", "oci", name, "--namespace", @namespace, "--context", context]
       );
-    var (exitCode, message) = await CLI.RunAsync(command, cancellationToken: cancellationToken).ConfigureAwait(false);
+    var (exitCode, _) = await CLI.RunAsync(command, cancellationToken: cancellationToken).ConfigureAwait(false);
     if (exitCode != 0)
     {
-      throw new InvalidOperationException($"Failed to reconcile OCI source: {message}");
+      throw new FluxException($"Failed to reconcile OCI source");
     }
   }
 
@@ -172,10 +172,10 @@ public static class Flux
       Command.WithArguments(
         ["reconcile", "kustomization", name, "--namespace", @namespace, "--with-source", withSource.ToString(), "--context", context]
       );
-    var (exitCode, message) = await CLI.RunAsync(command, cancellationToken: cancellationToken).ConfigureAwait(false);
+    var (exitCode, _) = await CLI.RunAsync(command, cancellationToken: cancellationToken).ConfigureAwait(false);
     if (exitCode != 0)
     {
-      throw new InvalidOperationException($"Failed to reconcile Kustomization: {message}");
+      throw new FluxException($"Failed to reconcile Kustomization");
     }
   }
 
@@ -198,10 +198,10 @@ public static class Flux
       Command.WithArguments(
         ["reconcile", "helmrelease", name, "--namespace", @namespace, "--with-source", withSource.ToString(), "--force", force.ToString(), "--reset", reset.ToString(), "--context", context]
       );
-    var (exitCode, message) = await CLI.RunAsync(command, cancellationToken: cancellationToken).ConfigureAwait(false);
+    var (exitCode, _) = await CLI.RunAsync(command, cancellationToken: cancellationToken).ConfigureAwait(false);
     if (exitCode != 0)
     {
-      throw new InvalidOperationException($"Failed to reconcile HelmRelease: {message}");
+      throw new FluxException($"Failed to reconcile HelmRelease");
     }
   }
 
@@ -233,19 +233,19 @@ public static class Flux
     var pushCommand = Command.WithArguments(
       ["push", "artifact", $"{registry}:{currentTimeEpoch}", "--path", path, "--source", source, "--revision", revision]
     );
-    var (exitCode, message) = await CLI.RunAsync(pushCommand, cancellationToken: cancellationToken).ConfigureAwait(false);
+    var (exitCode, _) = await CLI.RunAsync(pushCommand, cancellationToken: cancellationToken).ConfigureAwait(false);
     if (exitCode != 0)
     {
-      throw new InvalidOperationException($"Failed to push artifact: {message}");
+      throw new FluxException($"Failed to push artifact");
     }
 
     var tagCommand = Command.WithArguments(
       ["tag", "artifact", $"{registry}:{currentTimeEpoch}", "--tag", "latest"]
     );
-    (exitCode, message) = await CLI.RunAsync(tagCommand, cancellationToken: cancellationToken).ConfigureAwait(false);
+    (exitCode, _) = await CLI.RunAsync(tagCommand, cancellationToken: cancellationToken).ConfigureAwait(false);
     if (exitCode != 0)
     {
-      throw new InvalidOperationException($"Failed to tag artifact: {message}");
+      throw new FluxException($"Failed to tag artifact");
     }
   }
 }

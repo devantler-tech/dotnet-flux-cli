@@ -17,6 +17,6 @@ public class ReconcileHelmReleaseAsyncTests
     var exception = await Record.ExceptionAsync(async () => await Flux.ReconcileHelmReleaseAsync("test").ConfigureAwait(false));
 
     // Assert
-    _ = Assert.IsType<InvalidOperationException>(exception);
+    _ = Assert.IsType<FluxException>(exception);
   }
 }

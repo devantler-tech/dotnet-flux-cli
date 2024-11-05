@@ -44,6 +44,6 @@ public class PushArtifactAsyncTests
     var exception = await Record.ExceptionAsync(async () => await Flux.PushArtifactAsync(new Uri("oci://localhost:5555/test-artifact"), "./Devantler.FluxCLI.Tests/assets", cancellationToken: new CancellationToken()).ConfigureAwait(false));
 
     // Assert
-    _ = Assert.IsType<InvalidOperationException>(exception);
+    _ = Assert.IsType<FluxException>(exception);
   }
 }
