@@ -17,6 +17,6 @@ public class InstallAsyncTests
     var exception = await Record.ExceptionAsync(async () => await Flux.InstallAsync().ConfigureAwait(false));
 
     // Assert
-    _ = Assert.IsType<InvalidOperationException>(exception);
+    _ = Assert.IsType<FluxException>(exception);
   }
 }

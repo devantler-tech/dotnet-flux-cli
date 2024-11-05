@@ -17,6 +17,6 @@ public class UninstallAsyncTests
     var exception = await Record.ExceptionAsync(async () => await Flux.UninstallAsync().ConfigureAwait(false));
 
     // Assert
-    _ = Assert.IsType<InvalidOperationException>(exception);
+    _ = Assert.IsType<FluxException>(exception);
   }
 }

@@ -18,6 +18,6 @@ public class CreateOCISourceAsyncTests
     var exception = await Record.ExceptionAsync(async () => await Flux.CreateOCISourceAsync("test", new Uri("http://test")).ConfigureAwait(false));
 
     // Assert
-    _ = Assert.IsType<InvalidOperationException>(exception);
+    _ = Assert.IsType<FluxException>(exception);
   }
 }

@@ -17,6 +17,6 @@ public class ReconcileKustomizationAsyncTests
     var exception = await Record.ExceptionAsync(async () => await Flux.ReconcileKustomizationAsync("test").ConfigureAwait(false));
 
     // Assert
-    _ = Assert.IsType<InvalidOperationException>(exception);
+    _ = Assert.IsType<FluxException>(exception);
   }
 }

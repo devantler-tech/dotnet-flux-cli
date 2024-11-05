@@ -17,6 +17,6 @@ public class CreateKustomizationAsyncTests
     var exception = await Record.ExceptionAsync(async () => await Flux.CreateKustomizationAsync("test", "test", "test").ConfigureAwait(false));
 
     // Assert
-    _ = Assert.IsType<InvalidOperationException>(exception);
+    _ = Assert.IsType<FluxException>(exception);
   }
 }
