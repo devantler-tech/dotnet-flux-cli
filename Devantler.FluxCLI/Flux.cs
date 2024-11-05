@@ -185,10 +185,10 @@ public static class Flux
   {
     var command = string.IsNullOrEmpty(context) ?
       Command.WithArguments(
-        ["reconcile", "kustomization", name, "--namespace", @namespace, "--with-source", withSource.ToString(), "--timeout", timeout]
+        ["reconcile", "kustomization", name, "--namespace", @namespace, $"--with-source={withSource}", "--timeout", timeout]
       ) :
       Command.WithArguments(
-        ["reconcile", "kustomization", name, "--namespace", @namespace, "--with-source", withSource.ToString(), "--timeout", timeout, "--context", context]
+        ["reconcile", "kustomization", name, "--namespace", @namespace, $"--with-source={withSource}", "--timeout", timeout, "--context", context]
       );
     var (exitCode, _) = await CLI.RunAsync(command, cancellationToken: cancellationToken).ConfigureAwait(false);
     if (exitCode != 0)
