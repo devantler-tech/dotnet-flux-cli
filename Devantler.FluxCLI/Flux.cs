@@ -155,15 +155,16 @@ public static class Flux
   /// <param name="name"></param>
   /// <param name="context"></param>
   /// <param name="namespace"></param>
+  /// <param name="timeout"></param>
   /// <param name="cancellationToken"></param>
-  public static async Task ReconcileOCISourceAsync(string name, string? context = default, string @namespace = "flux-system", CancellationToken cancellationToken = default)
+  public static async Task ReconcileOCISourceAsync(string name, string? context = default, string @namespace = "flux-system", string timeout = "5m", CancellationToken cancellationToken = default)
   {
     var command = string.IsNullOrEmpty(context) ?
       Command.WithArguments(
-        ["reconcile", "source", "oci", name, "--namespace", @namespace]
+        ["reconcile", "source", "oci", name, "--namespace", @namespace, "--timeout", timeout]
       ) :
       Command.WithArguments(
-        ["reconcile", "source", "oci", name, "--namespace", @namespace, "--context", context]
+        ["reconcile", "source", "oci", name, "--namespace", @namespace, "--timeout", timeout, "--context", context]
       );
     var (exitCode, _) = await CLI.RunAsync(command, cancellationToken: cancellationToken).ConfigureAwait(false);
     if (exitCode != 0)
@@ -179,15 +180,16 @@ public static class Flux
   /// <param name="context"></param>
   /// <param name="namespace"></param>
   /// <param name="withSource"></param>
+  /// <param name="timeout"></param>
   /// <param name="cancellationToken"></param>
-  public static async Task ReconcileKustomizationAsync(string name, string? context = default, string @namespace = "flux-system", bool withSource = false, CancellationToken cancellationToken = default)
+  public static async Task ReconcileKustomizationAsync(string name, string? context = default, string @namespace = "flux-system", bool withSource = false, string timeout = "5m", CancellationToken cancellationToken = default)
   {
     var command = string.IsNullOrEmpty(context) ?
       Command.WithArguments(
-        ["reconcile", "kustomization", name, "--namespace", @namespace, "--with-source", withSource.ToString()]
+        ["reconcile", "kustomization", name, "--namespace", @namespace, $"--with-source={withSource}", "--timeout", timeout]
       ) :
       Command.WithArguments(
-        ["reconcile", "kustomization", name, "--namespace", @namespace, "--with-source", withSource.ToString(), "--context", context]
+        ["reconcile", "kustomization", name, "--namespace", @namespace, $"--with-source={withSource}", "--timeout", timeout, "--context", context]
       );
     var (exitCode, _) = await CLI.RunAsync(command, cancellationToken: cancellationToken).ConfigureAwait(false);
     if (exitCode != 0)

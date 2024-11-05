@@ -1,7 +1,7 @@
 namespace Devantler.FluxCLI.Tests.FluxTests;
 
 /// <summary>
-/// Tests for the <see cref="Flux.ReconcileOCISourceAsync(string, string, string, CancellationToken)"/> method.
+/// Tests for the <see cref="Flux.ReconcileOCISourceAsync(string, string, string, string, CancellationToken)"/> method.
 /// </summary>
 [Collection("Flux")]
 public class ReconcileOCISourceAsyncTests
