@@ -155,15 +155,16 @@ public static class Flux
   /// <param name="name"></param>
   /// <param name="context"></param>
   /// <param name="namespace"></param>
+  /// <param name="timeout"></param>
   /// <param name="cancellationToken"></param>
-  public static async Task ReconcileOCISourceAsync(string name, string? context = default, string @namespace = "flux-system", CancellationToken cancellationToken = default)
+  public static async Task ReconcileOCISourceAsync(string name, string? context = default, string @namespace = "flux-system", string timeout = "5m", CancellationToken cancellationToken = default)
   {
     var command = string.IsNullOrEmpty(context) ?
       Command.WithArguments(
-        ["reconcile", "source", "oci", name, "--namespace", @namespace]
+        ["reconcile", "source", "oci", name, "--namespace", @namespace, "--timeout", timeout]
       ) :
       Command.WithArguments(
-        ["reconcile", "source", "oci", name, "--namespace", @namespace, "--context", context]
+        ["reconcile", "source", "oci", name, "--namespace", @namespace, "--timeout", timeout, "--context", context]
       );
     var (exitCode, _) = await CLI.RunAsync(command, cancellationToken: cancellationToken).ConfigureAwait(false);
     if (exitCode != 0)
