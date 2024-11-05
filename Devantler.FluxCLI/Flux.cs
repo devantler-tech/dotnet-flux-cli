@@ -137,10 +137,10 @@ public static class Flux
   {
     var command = string.IsNullOrEmpty(context) ?
       Command.WithArguments(
-        ["create", "kustomization", name, "--source", source, "--path", path, "--namespace", @namespace, "--target-namespace", @namespace, "--interval", interval, "--prune", prune.ToString(), "--wait", wait.ToString(), "--depends-on", dependsOn != null ? string.Join(",", dependsOn) : ""]
+        ["create", "kustomization", name, "--source", source, "--path", path, "--namespace", @namespace, "--target-namespace", @namespace, "--interval", interval, "--prune", prune.ToString(), $"--wait={wait}", "--depends-on", dependsOn != null ? string.Join(",", dependsOn) : ""]
       ) :
       Command.WithArguments(
-        ["create", "kustomization", name, "--source", source, "--path", path, "--namespace", @namespace, "--target-namespace", @namespace, "--interval", interval, "--prune", prune.ToString(), "--wait", wait.ToString(), "--depends-on", dependsOn != null ? string.Join(",", dependsOn) : "", "--context", context]
+        ["create", "kustomization", name, "--source", source, "--path", path, "--namespace", @namespace, "--target-namespace", @namespace, "--interval", interval, "--prune", prune.ToString(), $"--wait={wait}", "--depends-on", dependsOn != null ? string.Join(",", dependsOn) : "", "--context", context]
       );
     var (exitCode, _) = await CLI.RunAsync(command, cancellationToken: cancellationToken).ConfigureAwait(false);
     if (exitCode != 0)
