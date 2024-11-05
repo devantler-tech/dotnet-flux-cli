@@ -1,7 +1,7 @@
 namespace Devantler.FluxCLI.Tests.FluxTests;
 
 /// <summary>
-/// Tests for the <see cref="Flux.CreateOCISourceAsync(string, Uri, string, string, string, string, CancellationToken)"/> method.
+/// Tests for the <see cref="Flux.CreateOCISourceAsync(string, Uri, bool, string, string, string, string, CancellationToken)"/> method.
 /// </summary>
 [Collection("Flux")]
 public class CreateOCISourceAsyncTests
@@ -15,7 +15,7 @@ public class CreateOCISourceAsyncTests
   public async Task CreateOCISourceAsync_ThrowsInvalidOperationException_WhenNoClusterIsConfigured()
   {
     // Act
-    var exception = await Record.ExceptionAsync(async () => await Flux.CreateOCISourceAsync("test", new Uri("http://test")).ConfigureAwait(false));
+    var exception = await Record.ExceptionAsync(async () => await Flux.CreateOCISourceAsync("test", new Uri("http://test"), true).ConfigureAwait(false));
 
     // Assert
     _ = Assert.IsType<FluxException>(exception);

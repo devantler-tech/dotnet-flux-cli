@@ -79,21 +79,36 @@ public static class Flux
   /// <param name="context"></param>
   /// <param name="name"></param>
   /// <param name="url"></param>
+  /// <param name="insecure"></param>
   /// <param name="namespace"></param>
   /// <param name="tag"></param>
   /// <param name="interval"></param>
   /// <param name="cancellationToken"></param>
   /// <returns></returns>
   /// <exception cref="FluxException"></exception>
-  public static async Task CreateOCISourceAsync(string name, Uri url, string? context = default, string @namespace = "flux-system", string tag = "latest", string interval = "10m", CancellationToken cancellationToken = default)
+  public static async Task CreateOCISourceAsync(string name, Uri url, bool insecure = false, string? context = default, string @namespace = "flux-system", string tag = "latest", string interval = "10m", CancellationToken cancellationToken = default)
   {
     ArgumentNullException.ThrowIfNull(url, nameof(url));
     var command = string.IsNullOrEmpty(context) ?
       Command.WithArguments(
-        ["create", "source", "oci", name, "--url", url.ToString(), "--tag", tag, "--interval", interval, "--namespace", @namespace]
+        [
+          "create", "source", "oci", name,
+          "--url", url.ToString(),
+          "--insecure", insecure.ToString(),
+          "--tag", tag,
+          "--interval", interval,
+          "--namespace", @namespace
+        ]
       ) :
       Command.WithArguments(
-        ["create", "source", "oci", name, "--url", url.ToString(), "--tag", tag, "--interval", interval, "--namespace", @namespace, "--context", context]
+        [
+          "create", "source", "oci", name,
+          "--url", url.ToString(),
+          "--insecure", insecure.ToString(),
+          "--tag", tag,
+          "--interval", interval,
+          "--namespace", @namespace,
+          "--context", context]
       );
     var (exitCode, _) = await CLI.RunAsync(command, cancellationToken: cancellationToken).ConfigureAwait(false);
     if (exitCode != 0)
