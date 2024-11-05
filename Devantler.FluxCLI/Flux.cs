@@ -96,7 +96,7 @@ public static class Flux
         [
           "create", "source", "oci", name,
           "--url", url.ToString(),
-          $"--insecure={insecure}",
+          "--insecure", insecure.ToString(),
           "--tag", tag,
           "--interval", interval,
           "--namespace", @namespace
@@ -106,7 +106,7 @@ public static class Flux
         [
           "create", "source", "oci", name,
           "--url", url.ToString(),
-          $"--insecure={insecure}",
+          "--insecure", insecure.ToString(),
           "--tag", tag,
           "--interval", interval,
           "--namespace", @namespace,
