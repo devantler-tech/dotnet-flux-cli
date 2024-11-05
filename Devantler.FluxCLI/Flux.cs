@@ -42,7 +42,7 @@ public static class Flux
   /// <param name="context"></param>
   /// <param name="cancellationToken"></param>
   /// <returns></returns>
-  /// <exception cref="InvalidOperationException"></exception>
+  /// <exception cref="FluxException"></exception>
   public static async Task InstallAsync(string? context = default, CancellationToken cancellationToken = default)
   {
     var command = string.IsNullOrEmpty(context) ? Command.WithArguments(["install"]) :
@@ -60,7 +60,7 @@ public static class Flux
   /// <param name="context"></param>
   /// <param name="cancellationToken"></param>
   /// <returns></returns>
-  /// <exception cref="InvalidOperationException"></exception>
+  /// <exception cref="FluxException"></exception>
   public static async Task UninstallAsync(string? context = default, CancellationToken cancellationToken = default)
   {
     var command = string.IsNullOrEmpty(context) ?
@@ -84,7 +84,7 @@ public static class Flux
   /// <param name="interval"></param>
   /// <param name="cancellationToken"></param>
   /// <returns></returns>
-  /// <exception cref="InvalidOperationException"></exception>
+  /// <exception cref="FluxException"></exception>
   public static async Task CreateOCISourceAsync(string name, Uri url, string? context = default, string @namespace = "flux-system", string tag = "latest", string interval = "10m", CancellationToken cancellationToken = default)
   {
     ArgumentNullException.ThrowIfNull(url, nameof(url));
@@ -175,7 +175,7 @@ public static class Flux
     var (exitCode, _) = await CLI.RunAsync(command, cancellationToken: cancellationToken).ConfigureAwait(false);
     if (exitCode != 0)
     {
-      throw new InvalidOperationException($"Failed to reconcile Kustomization");
+      throw new FluxException($"Failed to reconcile Kustomization");
     }
   }
 
@@ -201,7 +201,7 @@ public static class Flux
     var (exitCode, _) = await CLI.RunAsync(command, cancellationToken: cancellationToken).ConfigureAwait(false);
     if (exitCode != 0)
     {
-      throw new InvalidOperationException($"Failed to reconcile HelmRelease");
+      throw new FluxException($"Failed to reconcile HelmRelease");
     }
   }
 
