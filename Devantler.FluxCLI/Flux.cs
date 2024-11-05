@@ -1,6 +1,8 @@
 ﻿using System.Globalization;
 using System.Runtime.InteropServices;
+using IdentityModel;
 using CliWrap;
+
 using Devantler.CLIRunner;
 
 namespace Devantler.FluxCLI;
@@ -233,7 +235,7 @@ public static class Flux
   {
     ArgumentNullException.ThrowIfNull(registry, nameof(registry));
 
-    long currentTimeEpoch = DateTimeOffset.Now.ToUnixTimeSeconds();
+    long currentTimeEpoch = DateTime.Now.ToEpochTime();
 
     if (string.IsNullOrEmpty(source))
     {
@@ -246,7 +248,14 @@ public static class Flux
     }
 
     var pushCommand = Command.WithArguments(
-      ["push", "artifact", $"{registry}:{currentTimeEpoch}", "--path", path, "--source", source, "--revision", revision]
+      [
+        "push",
+        "artifact",
+        $"{registry}:{revision}",
+        "--path", path,
+        "--source", source,
+        "--revision", revision
+      ]
     );
     var (exitCode, _) = await CLI.RunAsync(pushCommand, cancellationToken: cancellationToken).ConfigureAwait(false);
     if (exitCode != 0)
@@ -255,7 +264,11 @@ public static class Flux
     }
 
     var tagCommand = Command.WithArguments(
-      ["tag", "artifact", $"{registry}:{currentTimeEpoch}", "--tag", "latest"]
+      [
+        "tag",
+        "artifact",
+        $"{registry}:{revision}",
+        "--tag", "latest"]
     );
     (exitCode, _) = await CLI.RunAsync(tagCommand, cancellationToken: cancellationToken).ConfigureAwait(false);
     if (exitCode != 0)
