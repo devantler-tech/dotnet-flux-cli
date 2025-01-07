@@ -28,10 +28,9 @@
 │       └── win-x64
 │           └── native
 └── Devantler.FluxCLI.Tests
-    ├── FluxTests
-    └── assets
+    └── FluxTests
 
-20 directories
+19 directories
 ```
 <!-- readme-tree end -->
 
