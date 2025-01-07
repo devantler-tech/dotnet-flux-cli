@@ -19,6 +19,7 @@ public class RunAsyncTests
 
     // Assert
     Assert.Equal(0, exitCode);
-    Assert.Matches(@"^v\d+\.\d+\.\d+$", message.Trim());
+    // assert that it matches "flux version x.x.x"
+    Assert.Matches(@"^flux version \d+\.\d+\.\d+$", message.Trim());
   }
 }
