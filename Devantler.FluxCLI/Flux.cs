@@ -39,12 +39,37 @@ public static class Flux
   }
 
   /// <summary>
+  /// Runs the flux CLI command with the given arguments.
+  /// </summary>
+  /// <param name="arguments"></param>
+  /// <param name="validation"></param>
+  /// <param name="silent"></param>
+  /// <param name="includeStdErr"></param>
+  /// <param name="cancellationToken"></param>
+  /// <returns></returns>
+  public static async Task<(int ExitCode, string Message)> RunAsync(
+    string[] arguments,
+    CommandResultValidation validation = CommandResultValidation.ZeroExitCode,
+    bool silent = false,
+    bool includeStdErr = true,
+    CancellationToken cancellationToken = default)
+  {
+    return await CLI.RunAsync(
+      Command.WithArguments(arguments),
+      validation: validation,
+      silent: silent,
+      includeStdErr: includeStdErr,
+      cancellationToken: cancellationToken).ConfigureAwait(false);
+  }
+
+  /// <summary>
   /// Installs flux.
   /// </summary>
   /// <param name="context"></param>
   /// <param name="cancellationToken"></param>
   /// <returns></returns>
   /// <exception cref="FluxException"></exception>
+  [Obsolete("This method is deprecated. Use RunAsync instead.")]
   public static async Task InstallAsync(string? context = default, CancellationToken cancellationToken = default)
   {
     var command = string.IsNullOrEmpty(context) ? Command.WithArguments(["install"]) :
@@ -63,6 +88,7 @@ public static class Flux
   /// <param name="cancellationToken"></param>
   /// <returns></returns>
   /// <exception cref="FluxException"></exception>
+  [Obsolete("This method is deprecated. Use RunAsync instead.")]
   public static async Task UninstallAsync(string? context = default, CancellationToken cancellationToken = default)
   {
     var command = string.IsNullOrEmpty(context) ?
@@ -88,6 +114,7 @@ public static class Flux
   /// <param name="cancellationToken"></param>
   /// <returns></returns>
   /// <exception cref="FluxException"></exception>
+  [Obsolete("This method is deprecated. Use RunAsync instead.")]
   public static async Task CreateOCISourceAsync(string name, Uri url, bool insecure = false, string? context = default, string @namespace = "flux-system", string tag = "latest", string interval = "10m", CancellationToken cancellationToken = default)
   {
     ArgumentNullException.ThrowIfNull(url, nameof(url));
@@ -132,7 +159,7 @@ public static class Flux
   /// <param name="prune"></param>
   /// <param name="wait"></param>
   /// <param name="cancellationToken"></param>
-  /// <returns></returns>
+  [Obsolete("This method is deprecated. Use RunAsync instead.")]
   public static async Task CreateKustomizationAsync(string name, string source, string path, string? context = default, string @namespace = "flux-system", string interval = "5m", string[]? dependsOn = default, bool prune = true, bool wait = true, CancellationToken cancellationToken = default)
   {
     var command = string.IsNullOrEmpty(context) ?
@@ -157,6 +184,7 @@ public static class Flux
   /// <param name="namespace"></param>
   /// <param name="timeout"></param>
   /// <param name="cancellationToken"></param>
+  [Obsolete("This method is deprecated. Use RunAsync instead.")]
   public static async Task ReconcileOCISourceAsync(string name, string? context = default, string @namespace = "flux-system", string timeout = "5m", CancellationToken cancellationToken = default)
   {
     var command = string.IsNullOrEmpty(context) ?
@@ -182,6 +210,7 @@ public static class Flux
   /// <param name="withSource"></param>
   /// <param name="timeout"></param>
   /// <param name="cancellationToken"></param>
+  [Obsolete("This method is deprecated. Use RunAsync instead.")]
   public static async Task ReconcileKustomizationAsync(string name, string? context = default, string @namespace = "flux-system", bool withSource = false, string timeout = "5m", CancellationToken cancellationToken = default)
   {
     var command = string.IsNullOrEmpty(context) ?
@@ -208,6 +237,7 @@ public static class Flux
   /// <param name="force"></param>
   /// <param name="reset"></param>
   /// <param name="cancellationToken"></param>
+  [Obsolete("This method is deprecated. Use RunAsync instead.")]
   public static async Task ReconcileHelmReleaseAsync(string name, string? context = default, string @namespace = "flux-system", bool withSource = false, bool force = false, bool reset = false, CancellationToken cancellationToken = default)
   {
     var command = string.IsNullOrEmpty(context) ?
@@ -232,7 +262,7 @@ public static class Flux
   /// <param name="source"></param>
   /// <param name="revision"></param>
   /// <param name="cancellationToken"></param>
-  /// <returns></returns>
+  [Obsolete("This method is deprecated. Use RunAsync instead.")]
   public static async Task PushArtifactAsync(Uri registry, string path, string? source = default, string? revision = default, CancellationToken cancellationToken = default)
   {
     ArgumentNullException.ThrowIfNull(registry, nameof(registry));
