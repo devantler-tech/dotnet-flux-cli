@@ -54,16 +54,5 @@ You can execute the Flux CLI commands using the `Flux` class.
 ```csharp
 using Devantler.FluxCLi;
 
-// Install flux
-await Flux.InstallAsync(cancellationToken: cancellationToken);
-
-// Create a new OCI source
-await Flux.CreateOCISourceAsync("podinfo", new Uri("oci://ghcr.io/stefanprodan/manifests/podinfo"));
-
-// Create a new Kustomization
-await Flux.CreateKustomizationAsync("podinfo", "OCIRepository/podinfo", "");
-
-// Reconcile the source and kustomization
-await Flux.ReconcileOCISourceAsync("podinfo").ConfigureAwait(false))
-await Flux.ReconcileKustomizationAsync("podinfo").ConfigureAwait(false)
+var (exitCode, message) = await Flux.RunAsync(["arg1", "arg2"]);
 ```
