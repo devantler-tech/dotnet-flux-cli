@@ -15,10 +15,10 @@ public class RunAsyncTests
   public async Task RunAsync_Version_ReturnsVersion()
   {
     // Act
-    var (exitCode, message) = await Flux.RunAsync(["--version"]);
+    var (exitCode, output) = await Flux.RunAsync(["--version"]);
 
     // Assert
     Assert.Equal(0, exitCode);
-    Assert.Matches(@"^flux version \d+\.\d+\.\d+$", message.Trim());
+    Assert.Matches(@"^flux version \d+\.\d+\.\d+$", output.Trim());
   }
 }

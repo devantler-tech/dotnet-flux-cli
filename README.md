@@ -53,5 +53,5 @@ You can execute the Flux CLI commands using the `Flux` class.
 ```csharp
 using Devantler.FluxCLi;
 
-var (exitCode, message) = await Flux.RunAsync(["arg1", "arg2"]);
+var (exitCode, output) = await Flux.RunAsync(["arg1", "arg2"]);
 ```
