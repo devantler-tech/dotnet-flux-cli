@@ -1,6 +1,4 @@
-﻿using System.Globalization;
-using System.Runtime.InteropServices;
-using IdentityModel;
+﻿using System.Runtime.InteropServices;
 using CliWrap;
 
 using Devantler.CLIRunner;
