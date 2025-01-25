@@ -94,8 +94,8 @@ public static class Flux
     var command = string.IsNullOrEmpty(context) ?
       Command.WithArguments(["uninstall", "--silent"]) :
       Command.WithArguments(["uninstall", "--silent", "--context", context]);
-    var (exitCode, message) = await CLI.RunAsync(command, cancellationToken: cancellationToken).ConfigureAwait(false);
-    if (exitCode != 0 || message.Contains("connection refused", StringComparison.OrdinalIgnoreCase))
+    var (exitCode, output) = await CLI.RunAsync(command, cancellationToken: cancellationToken).ConfigureAwait(false);
+    if (exitCode != 0 || output.Contains("connection refused", StringComparison.OrdinalIgnoreCase))
     {
       throw new FluxException($"Failed to uninstall flux");
     }
