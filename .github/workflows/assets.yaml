@@ -23,10 +23,17 @@ jobs:
         run: |
           BINARY_VERSION=$(./Devantler.FluxCLI/runtimes/linux-x64/native/flux-linux-x64 --version | sed 's/flux version //')
           echo "BINARY_VERSION=v$BINARY_VERSION" >> $GITHUB_ENV
+      - name: ⤴ Upload Flux binary
+        uses: actions/upload-artifact@v2
+        with:
+          name: flux-binary
+          path: Devantler.FluxCLI/runtimes/linux-arm64/native/flux-linux-arm64
       - name: ✍🏻 Create PR
         uses: peter-evans/create-pull-request@v7
+        env:
+          BINARY_VERSION: ${{ env.BINARY_VERSION }}
         with:
-          commit-message: "feat: Update  Flux binary to ${{ env.BINARY_VERSION }}"
+          commit-message: "feat: Update Flux binary to ${{ env.BINARY_VERSION }}"
           title: "feat: Update Flux to ${{ env.BINARY_VERSION }}"
           body: |
             This PR updates the Flux binary used by Devantler.FluxCLI to ${{ env.BINARY_VERSION }}.
