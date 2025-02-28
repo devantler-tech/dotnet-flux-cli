@@ -13,24 +13,26 @@
 ├── .github
 │   ├── scripts
 │   └── workflows
-├── Devantler.FluxCLI
-│   └── runtimes
-│       ├── linux-arm64
-│       │   └── native
-│       ├── linux-x64
-│       │   └── native
-│       ├── osx-arm64
-│       │   └── native
-│       ├── osx-x64
-│       │   └── native
-│       ├── win-arm64
-│       │   └── native
-│       └── win-x64
-│           └── native
-└── Devantler.FluxCLI.Tests
-    └── FluxTests
+├── src
+│   └── Devantler.FluxCLI
+│       └── runtimes
+│           ├── linux-arm64
+│           │   └── native
+│           ├── linux-x64
+│           │   └── native
+│           ├── osx-arm64
+│           │   └── native
+│           ├── osx-x64
+│           │   └── native
+│           ├── win-arm64
+│           │   └── native
+│           └── win-x64
+│               └── native
+└── tests
+    └── Devantler.FluxCLI.Tests
+        └── FluxTests
 
-20 directories
+22 directories
 ```
 <!-- readme-tree end -->
 
