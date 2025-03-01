@@ -23,7 +23,7 @@ jobs:
           private_key: ${{ secrets.APP_PRIVATE_KEY }}
       - name: 🎯 Get version
         run: |
-          BINARY_VERSION=$(./Devantler.FluxCLI/runtimes/linux-x64/native/flux-linux-x64 --version | sed 's/flux version //')
+          BINARY_VERSION=$(./src/Devantler.FluxCLI/runtimes/linux-x64/native/flux-linux-x64 --version | sed 's/flux version //')
           echo "BINARY_VERSION=v$BINARY_VERSION" >> $GITHUB_ENV
       - name: ✍🏻 Create PR
         uses: peter-evans/create-pull-request@v7
