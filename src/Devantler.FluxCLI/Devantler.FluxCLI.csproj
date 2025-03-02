@@ -12,8 +12,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Devantler.CLIRunner" Version="1.0.38" />
-    <PackageReference Include="IdentityModel" Version="7.0.0" />
+    <PackageReference Include="CLIWrap" Version="3.8.1" />
   </ItemGroup>
 
   <ItemGroup>
