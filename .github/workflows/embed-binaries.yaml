@@ -15,4 +15,5 @@ jobs:
       BINARY_NAME: flux
       DOTNET_PROJECT_NAME: Devantler.FluxCLI
       SCRIPT_PATH: scripts/get-flux-binary.sh
+      VERSION_ARGS: version --client | awk '{print $2}'
 
