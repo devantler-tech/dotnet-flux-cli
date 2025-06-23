@@ -4,48 +4,21 @@
 [![Test](https://github.com/devantler-tech/dotnet-flux-cli/actions/workflows/test.yaml/badge.svg)](https://github.com/devantler-tech/dotnet-flux-cli/actions/workflows/test.yaml)
 [![codecov](https://codecov.io/gh/devantler-tech/dotnet-flux-cli/graph/badge.svg?token=RhQPb4fE7z)](https://codecov.io/gh/devantler-tech/dotnet-flux-cli)
 
-<details>
-  <summary>Show/hide folder structure</summary>
-
-<!-- readme-tree start -->
-```
-.
-├── .github
-│   └── workflows
-├── scripts
-├── src
-│   └── Devantler.FluxCLI
-│       └── runtimes
-│           ├── linux-arm64
-│           │   └── native
-│           ├── linux-x64
-│           │   └── native
-│           ├── osx-arm64
-│           │   └── native
-│           ├── osx-x64
-│           │   └── native
-│           ├── win-arm64
-│           │   └── native
-│           └── win-x64
-│               └── native
-└── tests
-    └── Devantler.FluxCLI.Tests
-        └── FluxTests
-
-22 directories
-```
-<!-- readme-tree end -->
-
-</details>
-
 A simple .NET library that embeds the Flux CLI.
 
 ## 🚀 Getting Started
 
+### Prerequisites
+
+- .NET 9.0 or later
+- [Flux CLI](https://fluxcd.io/docs/installation/) installed and available in your system's PATH
+
+### Installation
+
 To get started, you can install the package from NuGet.
 
 ```bash
-dotnet add package Devantler.FluxCLI
+dotnet add package DevantlerTech.FluxCLI
 ```
 
 ## 📝 Usage
@@ -53,7 +26,7 @@ dotnet add package Devantler.FluxCLI
 You can execute the Flux CLI commands using the `Flux` class.
 
 ```csharp
-using Devantler.FluxCLi;
+using DevantlerTech.FluxCLi;
 
 var (exitCode, output) = await Flux.RunAsync(["arg1", "arg2"]);
 ```
