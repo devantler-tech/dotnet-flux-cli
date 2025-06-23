@@ -15,7 +15,7 @@ public static class Flux
   {
     get
     {
-      string binaryName = Environment.OSVersion.Platform == PlatformID.Win32NT ? "flux.exe" : "flux";
+      string binaryName = OperatingSystem.IsWindows() ? "flux.exe" : "flux";
       string? pathEnv = Environment.GetEnvironmentVariable("PATH");
 
       if (!string.IsNullOrEmpty(pathEnv))
